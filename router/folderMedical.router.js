@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const controller = require('../controller/folderMedical.controller')
 const multer = require("multer")
+const httpStatusText = require('../utils/httpStatusText')
+
+
+
 const diskStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         console.log(file);
