@@ -1,17 +1,17 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controller/rapport.controller')
-
+const virefytoken = require("../middlewares/virefytoken")
 
 
 
 router.route('/')
-        .post(controller.createrapport)
-        .get(controller.getAllrapports)
+        .post(virefytoken,controller.createrapport)
+        .get(virefytoken,controller.getAllrapports)
 
 router.route('/:id')
-        .get(controller.getrapportById)
-        .patch(controller.updaterapport)
-        .delete(controller.deleterapport)
+        .get(virefytoken,controller.getrapportById)
+        .patch(virefytoken,controller.updaterapport)
+        .delete(virefytoken,controller.deleterapport)
 
 module.exports=router

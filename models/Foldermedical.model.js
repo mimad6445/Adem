@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const FolderMedicalSchema = new mongoose.Schema({
-    id : {type: String,required: true},
     employee : {type: mongoose.Types.ObjectId,ref : "employee",required: true},
     employeeHeight: {type: String,required: true},
     employeeWeight: {type: String,required: true},

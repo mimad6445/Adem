@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const controller = require('../controller/doctor.controller')
 const otp = require('../controller/otp.controller')
-
+const virefytoken = require("../middlewares/virefytoken")
 
 
 router.route('/register')
@@ -12,11 +12,11 @@ router.route('/login')
         .post(controller.loginDoctor)
 
 router.route('/AllDoctors')
-        .get(controller.getAllDoctors)
+        .get(virefytoken,controller.getAllDoctors)
 
 router.route('/:id')
-        .patch(controller.updateDoctor)
-        .delete(controller.deleteDoctor)
+        .patch(virefytoken,controller.updateDoctor)
+        .delete(virefytoken,controller.deleteDoctor)
 
 
 module.exports=router

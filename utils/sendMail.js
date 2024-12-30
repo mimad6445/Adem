@@ -23,7 +23,7 @@ const sendMail = async (otp, email)=>{
         <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #eee;">
             <div style="font-family: Arial, sans-serif; width:500px; heigth:500px background-color: #f3f4f6;">
                 <h1 style="color: #333;">Aden Verification Code</h1>
-                <p style="font-size: 16px;">Your Aden verification code is <strong>${otp}</strong>.</p>
+                <p style="font-size: 16px;">Your Adem verification code is <strong>${otp}</strong>.</p>
             </div>
         </div>
     </center>

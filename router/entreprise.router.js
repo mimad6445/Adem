@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controller/entreprise.controller')
-
+const virefytoken = require("../middlewares/virefytoken")
 
 
 router.route('/register')
@@ -11,11 +11,11 @@ router.route('/login')
         .post(controller.loginEntreprise)
 
 router.route('/AllEntreprises')
-        .get(controller.getAllEntreprises)
+        .get(virefytoken,controller.getAllEntreprises)
 
 router.route('/:id')
-        .patch(controller.updateEntreprise)
-        .delete(controller.deleteEntreprise)
+        .patch(virefytoken,controller.updateEntreprise)
+        .delete(virefytoken,controller.deleteEntreprise)
 
 
 module.exports=router

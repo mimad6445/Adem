@@ -1,19 +1,18 @@
 const rapport = require('../models/rapport.model');
 const doctorDb = require('../models/doctor.model');
 const httpStatusText = require("../utils/httpStatusText");
-const { nanoid } = import('nanoid');
 
 const createrapport = async (req, res) => {
     try {
-        const {Rapport,doctor} = req.body;
-        const existingDoctor = await doctorDb.findOne({ id: doctor });
+        const {Rapport,doctor,employee} = req.body;
+        const existingDoctor = await doctorDb.findById(doctor);
             if(!existingDoctor){
-                    res.status(400).json({ status: httpStatusText.SUCCESS, mesg: "doctor not found"});
+                    return res.status(400).json({ status: httpStatusText.SUCCESS, mesg: "doctor not found"});
             }
         const newrapport = await rapport.create({
-            id : nanoid(10),
             Rapport,
-            doctor
+            doctor,
+            employee
         });
         await newrapport.save();
         res.status(201).json({status:httpStatusText.SUCCESS , message: "rapport created successfully", data: newrapport });

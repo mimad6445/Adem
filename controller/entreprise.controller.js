@@ -1,5 +1,4 @@
 const entreprise = require('../models/entreprise.model');
-const { nanoid } = import('nanoid');
 const httpStatusText = require("../utils/httpStatusText");
 const generateToken = require("../utils/generateToken");
 const bcrypt = require("bcryptjs");
@@ -8,12 +7,7 @@ const createEntreprise = async (req, res) => {
     try {
         const {NumeroRegistre,GroupeIndus,NomEts,AdresseEts,Secteur ,email,telephone,password} = req.body;
         const hashedPassword = await bcrypt.hash(password,10);
-        const existingEmail = await entreprise.findOne({ email });
-        if(existingEmail){
-            res.status(400).json({ status: httpStatusText.SUCCESS, mesg: "E-mail already exists"});
-        }
         const newentreprise = await entreprise.create({
-            id : nanoid(10),
             NumeroRegistre,
             GroupeIndus,
             NomEts,
@@ -23,8 +17,8 @@ const createEntreprise = async (req, res) => {
             telephone,
             password: hashedPassword
         });
-        const token = await generateToken({ email:email , id: newentreprise.id });
-        addNewAccount.token = token;
+        const token = await generateToken({ email:email , id: newentreprise._id });
+        newentreprise.token = token;
         await newentreprise.save();
         res.status(201).json({status:httpStatusText.SUCCESS , message: "entreprise created successfully", data: newentreprise });
     } catch (error) {

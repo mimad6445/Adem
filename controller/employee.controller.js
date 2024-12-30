@@ -1,17 +1,15 @@
 const employee = require('../models/employee.model');
 const entreprise = require('../models/entreprise.model');
-const { nanoid } = import('nanoid');
 const httpStatusText = require("../utils/httpStatusText");
 
 const createEmployee = async (req, res) => {
     try {
         const {fullName,code,dateOfBirth,dateOfStartWork,email ,telephone,entrprise} = req.body;
-        const existingEnterprise = await entreprise.findOne({ id: entrprise });
+        const existingEnterprise = await entreprise.findById(entrprise);
             if(!existingEnterprise){
-                    res.status(400).json({ status: httpStatusText.SUCCESS, mesg: "Entreprise not found"});
+                    return res.status(400).json({ status: httpStatusText.SUCCESS, message: "Entreprise not found"});
             }
         const newEmployee = await employee.create({
-            id : nanoid(10),
             fullName,
             code,
             dateOfBirth,
@@ -21,7 +19,7 @@ const createEmployee = async (req, res) => {
             entrprise
         });
         await newEmployee.save();
-        res.status(201).json({status:httpStatusText.SUCCESS , message: "Employee created successfully", data: newEmployee });
+        return res.status(201).json({status:httpStatusText.SUCCESS , message: "Employee created successfully", data: newEmployee });
     } catch (error) {
         res.status(500).json({status:httpStatusText.ERROR ,message: "Error creating employee", error: error.message });
     }

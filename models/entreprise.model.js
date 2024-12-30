@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const EntrepriseSchema = new mongoose.Schema({
-    id : {type: String,required: true},
     NumeroRegistre: {type: String,required: true},
     GroupeIndus: {type: String,required: true},
     NomEts : {type: String,required: true},

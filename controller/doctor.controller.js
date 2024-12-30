@@ -8,12 +8,7 @@ const createDoctor = async (req, res) => {
     try {
         const {fullName,WorkPlace,dateOfBirth,dateOfStartWork,email,telephone,password} = req.body;
         const hashedPassword = await bcrypt.hash(password,10);
-        const existingEmail = await doctor.findOne({ email });
-        if(existingEmail){
-            res.status(400).json({ status: httpStatusText.SUCCESS, mesg: "E-mail already exists"});
-        }
         const newDoctor = await doctor.create({
-            id : nanoid(10),
             fullName,
             WorkPlace,
             dateOfBirth,
@@ -22,8 +17,8 @@ const createDoctor = async (req, res) => {
             telephone,
             password: hashedPassword
         });
-        const token = await generateToken({ email:email , id: newDoctor.id });
-        addNewAccount.token = token;
+        const token = await generateToken({ email:email , id: newDoctor._id });
+        newDoctor.token = token;
         await newDoctor.save();
         res.status(201).json({status:httpStatusText.SUCCESS , message: "Doctor created successfully", data: newDoctor });
     } catch (error) {
@@ -36,11 +31,11 @@ const loginDoctor = async(req,res)=>{
         const {email,password} = req.body;
         const existingDoctor = await doctor.findOne({ email });
         if(!existingDoctor){
-            res.status(404).json({status:httpStatusText.FAIL , message: "Doctor not found" });
+            return res.status(404).json({status:httpStatusText.FAIL , message: "Doctor not found" });
         }
         const isPasswordValid = await bcrypt.compare(password,existingDoctor.password);
         if(!isPasswordValid){
-            res.status(404).json({status:httpStatusText.FAIL , message: "Password not much" });
+            return res.status(404).json({status:httpStatusText.FAIL , message: "Password not much" });
         }
         const token = await generateToken({ email:email , id: existingDoctor.id });
         existingDoctor.token = token ;

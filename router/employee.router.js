@@ -1,17 +1,17 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controller/employee.controller')
-
+const virefytoken = require("../middlewares/virefytoken")
 
 
 
 router.route('/')
-        .post(controller.createEmployee)
-        .get(controller.getAllEmployees)
+        .post(virefytoken,controller.createEmployee)
+        .get(virefytoken,controller.getAllEmployees)
 
 router.route('/:id')
-        .get(controller.getEmployeeById)
-        .patch(controller.updateEmployee)
-        .delete(controller.deleteEmployee)
+        .get(virefytoken,controller.getEmployeeById)
+        .patch(virefytoken,controller.updateEmployee)
+        .delete(virefytoken,controller.deleteEmployee)
 
 module.exports=router

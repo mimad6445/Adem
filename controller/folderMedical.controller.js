@@ -1,28 +1,24 @@
 const folderMedical = require('../models/Foldermedical.model');
 const employee = require('../models/employee.model');
-const { nanoid } = import('nanoid');
 const httpStatusText = require("../utils/httpStatusText");
 const rapportModel = require('../models/rapport.model');
 
 const createfolderMedical = async (req, res) => {
     try {
         const {employeeHeight,employeeWeight,Rapport,employe} = req.body;
-        const existingEmployee = await employee.findOne({ id: employe });
+        const existingEmployee = await employee.findById(employe);
             if(!existingEmployee){
-                    res.status(400).json({ status: httpStatusText.FAIL, mesg: "employee not found"});
-            }
-        const existingRapport = await rapportModel.findOne({ id: Rapport });
-            if(!existingRapport){
-                res.status(400).json({ status: httpStatusText.FAIL, mesg: "rapport not found"});
+                return res.status(400).json({ status: httpStatusText.FAIL, mesg: "employee not found"});
             }
         const newfolderMedical = await folderMedical.create({
-            id : nanoid(10),
             bilan : req.file.filename,
             Rapport,
             employeeHeight,
             employeeWeight,
-            employe
+            employee:employe
         });
+        existingEmployee.folderMedical = newfolderMedical._id;
+        await existingEmployee.save()
         await newfolderMedical.save();
         res.status(201).json({status:httpStatusText.SUCCESS , message: "folderMedical created successfully", data: newfolderMedical });
     } catch (error) {
