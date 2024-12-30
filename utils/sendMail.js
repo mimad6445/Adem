@@ -18,7 +18,7 @@ const sendMail = async (otp, email)=>{
     const mailOptions = {
         from: process.env.MAIL ,
         to: email,
-        subject: 'Aden Otp', 
+        subject: 'Adem Otp', 
         html: `<center>
         <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #eee;">
             <div style="font-family: Arial, sans-serif; width:500px; heigth:500px background-color: #f3f4f6;">
@@ -30,11 +30,11 @@ const sendMail = async (otp, email)=>{
     
         `,
         attachments: [
-            {
-                filename: 'nbtha.png',
-                path: '../../nebtha.png',
-                cid: 'nebtha'
-            }
+            // {
+            //     filename: 'nbtha.png',
+            //     path: '../../nebtha.png',
+            //     cid: 'nebtha'
+            // }
         ]
     };
     transporter.sendMail(mailOptions, function(error, info) {
